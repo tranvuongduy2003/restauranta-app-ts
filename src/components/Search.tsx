@@ -1,11 +1,12 @@
 import React from 'react';
+import lodash from 'lodash';
 
 interface ISearchProps {
   type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
   name: React.InputHTMLAttributes<HTMLInputElement>['name'];
   placeholder?: string;
   hasIcon?: boolean;
-  handleInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange?: any;
 }
 
 const Input: React.FC<ISearchProps> = ({
@@ -13,13 +14,17 @@ const Input: React.FC<ISearchProps> = ({
   name,
   placeholder,
   hasIcon = false,
-  handleInputChange,
+  handleInputChange = () => {},
   ...props
 }) => {
   return (
     <div className="relative w-full">
       <input
-        onChange={handleInputChange}
+        onChange={lodash.debounce(
+          (e: React.ChangeEvent<HTMLInputElement>) =>
+            handleInputChange((e.target as any).value),
+          500
+        )}
         type={type}
         name={name}
         id={name}

@@ -9,7 +9,6 @@ import Search from 'components/Search';
 import Table from 'components/Table';
 import React, { useEffect, useState } from 'react';
 import Heading from '../Dashboard/Heading';
-import lodash from 'lodash';
 import Pagination from 'components/Pagination';
 import FoodSkeleton from 'components/skeleton/FoodSkeleton';
 import { ICategory, IFood } from 'utils/interface';
@@ -44,6 +43,7 @@ const ProductPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log(search);
     try {
       const handleFetchData = async () => {
         setLoading(true);
@@ -71,9 +71,7 @@ const ProductPage: React.FC = () => {
         <div className="flex items-center flex-1 gap-5">
           <div className="w-full max-w-[300px]">
             <Search
-              handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                lodash.debounce(() => setSearch(e.target.value), 700);
-              }}
+              handleInputChange={setSearch}
               name="search"
               placeholder="Tìm kiếm món ăn..."
             ></Search>

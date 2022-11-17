@@ -7,7 +7,6 @@ import Search from 'components/Search';
 import Table from 'components/Table';
 import Heading from 'pages/Dashboard/Heading';
 import React, { useEffect, useState } from 'react';
-import lodash from 'lodash';
 import Pagination from 'components/Pagination';
 import CategorySkeleton from 'components/skeleton/CategorySkeleton';
 import { ICategory } from 'utils/interface';
@@ -58,9 +57,7 @@ const CategoryPage: React.FC = () => {
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[300px]">
           <Search
-            handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              lodash.debounce(() => setSearch(e.target.value), 700);
-            }}
+            handleInputChange={setSearch}
             name="search"
             placeholder="Tìm kiếm danh mục..."
           ></Search>

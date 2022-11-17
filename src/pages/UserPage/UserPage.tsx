@@ -3,7 +3,6 @@ import Heading from 'pages/Dashboard/Heading';
 import React, { useEffect, useState } from 'react';
 import Search from 'components/Search';
 import userApi from 'api/userApi';
-import lodash from 'lodash';
 import { IUser } from 'utils/interface';
 
 const UserPage: React.FC = () => {
@@ -52,9 +51,7 @@ const UserPage: React.FC = () => {
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[300px]">
           <Search
-            handleInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              lodash.debounce(() => setSearch(e.target.value), 700);
-            }}
+            handleInputChange={setSearch}
             name="search"
             placeholder="Tìm kiếm người dùng..."
           ></Search>
