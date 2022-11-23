@@ -4,7 +4,7 @@ import { getAccessToken } from 'utils/auth';
 type IConfig = AxiosRequestConfig;
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://restaurant-uit-server.herokuapp.com',
 });
 
 // Interceptors

@@ -8,22 +8,14 @@ const ProtectedRoute: React.FC<{ allowPermission: string }> = ({
 }) => {
   const location = useLocation();
   const user = useAppSelector((state) => state.user);
-  // const [userPermission, setUserPermission] = useState('');
   const [node, setNode] = useState(<></>);
   useEffect(() => {
-    // setUserPermission(user.role);
     if (allowPermission === user.role) {
       setNode(<Layout></Layout>);
     } else {
       setNode(<Navigate to="/login" state={{ from: location }} replace />);
     }
   }, [user, allowPermission, location]);
-
-  // return userPermission === allowPermission ? (
-  //   <Layout></Layout>
-  // ) : (
-  //   <Navigate to="/login" state={{ from: location }} replace />
-  // );
 
   return node;
 };
