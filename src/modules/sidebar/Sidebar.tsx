@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { logout } from 'features/auth/userSlice';
 import { useAppDispatch } from 'app/hooks';
@@ -89,6 +89,7 @@ const sidebarLinks = [
 const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [url, setUrl] = useState('/');
 
   const handleLogout = () => {
     dispatch(logout());
@@ -101,7 +102,10 @@ const Sidebar: React.FC = () => {
         <NavLink
           key={item.title}
           to={item.url}
-          className="flex items-center gap-5 px-5 py-3 mx-5 mb-5 font-medium transition-all rounded-full cursor-pointer text-gray80 hover:bg-green-50 hover:text-primary focus:bg-green-50 focus:text-primary"
+          className={`flex items-center gap-5 px-5 py-3 mx-5 mb-5 font-medium transition-all rounded-full cursor-pointer hover:bg-green-50 hover:text-primary ${
+            url === item.url ? 'bg-green-50 text-primary' : 'text-gray80'
+          }`}
+          onClick={() => setUrl(item.url)}
         >
           <span>{item.icon}</span>
           <span>{item.title}</span>

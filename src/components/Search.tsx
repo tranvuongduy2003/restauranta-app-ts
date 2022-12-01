@@ -31,7 +31,7 @@ const Input: React.FC<ISearchProps> = ({
         placeholder={placeholder}
         className={`w-full ${
           hasIcon ? 'p-[15px_60px_15px_25px]' : 'p-[15px_25px]'
-        } border border-grayf1 rounded-lg font-normal transition-all text-black`}
+        } border border-grayf1 rounded-lg font-normal transition-all text-black focus:border-primary`}
         {...props}
       />
     </div>

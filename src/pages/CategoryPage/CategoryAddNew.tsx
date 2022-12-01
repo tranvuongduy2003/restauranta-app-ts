@@ -127,6 +127,7 @@ const CategoryAddNew: React.FC = () => {
           <Field>
             <Label>Tải ảnh</Label>
             <Controller
+              control={control as any}
               name="images"
               render={({ field }) => {
                 return (

@@ -1,7 +1,6 @@
 import categoryApi from 'api/categoryApi';
 import foodApi from 'api/foodApi';
 import DeleteAction from 'components/food-modal/actions/DeleteAction';
-import UpdateAction from 'components/food-modal/actions/UpdateAction';
 import ViewAction from 'components/food-modal/actions/ViewAction';
 import { Dropdown } from 'components/dropdown';
 import Search from 'components/Search';
@@ -12,7 +11,7 @@ import Pagination from 'components/Pagination';
 import FoodSkeleton from 'components/skeleton/FoodSkeleton';
 import { ICategory, IFood } from 'utils/interface';
 
-const ProductPage: React.FC = () => {
+const DeletedFoodPage: React.FC = () => {
   const [selectCategory, setSelectCategory] = useState<ICategory>();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>('');
@@ -27,7 +26,7 @@ const ProductPage: React.FC = () => {
         setLoading(true);
         const categoriesData: any = await categoryApi.getAll();
         const { categories } = categoriesData;
-        const foodsData: any = await foodApi.getAll(1);
+        const foodsData: any = await foodApi.getDeleted(1);
         const { foods, totalItems } = foodsData;
         setCategories(categories);
         setFoods(foods);
@@ -46,7 +45,7 @@ const ProductPage: React.FC = () => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const foodsData: any = await foodApi.getAll(
+        const foodsData: any = await foodApi.getDeleted(
           page || 1,
           selectCategory?._id,
           search
@@ -66,12 +65,10 @@ const ProductPage: React.FC = () => {
   return (
     <div>
       <Heading
-        title="Món ăn"
-        desc="Quản lý tất cả món ăn"
-        addUrl="/"
-        addTitle="Thêm món ăn"
-        deleteUrl="/food/deleted"
-        deleteTitle="Món ăn đã xóa"
+        title="Món ăn đã xóa"
+        desc="Quản lý tất cả món ăn đã xóa"
+        backUrl="/food"
+        backTitle="Trở về"
       ></Heading>
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center flex-1 gap-5">
@@ -164,7 +161,6 @@ const ProductPage: React.FC = () => {
                         )?.name,
                       }}
                     ></ViewAction>
-                    <UpdateAction item={food}></UpdateAction>
                     <DeleteAction id={food._id}></DeleteAction>
                   </div>
                 </td>
@@ -195,4 +191,4 @@ const ProductPage: React.FC = () => {
   );
 };
 
-export default ProductPage;
+export default DeletedFoodPage;

@@ -6,6 +6,13 @@ const categoryApi = {
     return axiosClient.get(url);
   },
 
+  getDeleted(page?: number, search?: string) {
+    const url: string = `/category/deleted?page=${page || ''}&search=${
+      search || ''
+    }`;
+    return axiosClient.get(url);
+  },
+
   get(id: string) {
     const url: string = `/category/${id}`;
     return axiosClient.get(url);

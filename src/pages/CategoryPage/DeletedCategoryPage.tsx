@@ -1,6 +1,5 @@
 import categoryApi from 'api/categoryApi';
 import DeleteAction from 'components/category-modal/actions/DeleteAction';
-import UpdateAction from 'components/category-modal/actions/UpdateAction';
 import ViewAction from 'components/category-modal/actions/ViewAction';
 import Search from 'components/Search';
 import Table from 'components/Table';
@@ -10,7 +9,7 @@ import Pagination from 'components/Pagination';
 import CategorySkeleton from 'components/skeleton/CategorySkeleton';
 import { ICategory } from 'utils/interface';
 
-const CategoryPage: React.FC = () => {
+const DeletedCategoryPage: React.FC = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
@@ -21,7 +20,7 @@ const CategoryPage: React.FC = () => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const data: any = await categoryApi.getAll(1);
+        const data: any = await categoryApi.getDeleted(1);
         const { categories, totalItems } = data;
         setCategories(categories);
         setTotalItems(totalItems);
@@ -38,7 +37,7 @@ const CategoryPage: React.FC = () => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const data: any = await categoryApi.getAll(page, search);
+        const data: any = await categoryApi.getDeleted(page, search);
         const { categories } = data;
         setCategories(categories);
         setLoading(false);
@@ -55,10 +54,8 @@ const CategoryPage: React.FC = () => {
       <Heading
         title="Danh mục"
         desc="Quản lý tất cả danh mục"
-        addUrl="/category/add-new"
-        addTitle="Thêm danh mục"
-        deleteUrl="/category/deleted"
-        deleteTitle="Danh mục đã xóa"
+        backUrl="/category"
+        backTitle="Trở về"
       ></Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[400px]">
@@ -105,7 +102,6 @@ const CategoryPage: React.FC = () => {
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
                     <ViewAction item={category}></ViewAction>
-                    <UpdateAction item={category}></UpdateAction>
                     <DeleteAction id={category._id}></DeleteAction>
                   </div>
                 </td>
@@ -124,7 +120,7 @@ const CategoryPage: React.FC = () => {
       </Table>
       <Pagination
         currentPage={page}
-        lastPage={Math.ceil(totalItems / 5)}
+        lastPage={Math.ceil((totalItems === 0 ? 1 : totalItems) / 5)}
         increase={() => {
           page !== Math.ceil(totalItems / 5) && setPage(page + 1);
         }}
@@ -136,4 +132,4 @@ const CategoryPage: React.FC = () => {
   );
 };
 
-export default CategoryPage;
+export default DeletedCategoryPage;
