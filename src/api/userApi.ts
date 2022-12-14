@@ -10,6 +10,21 @@ const userApi = {
     const url = '/auth/login';
     return axiosClient.post(url, data);
   },
+
+  logout(id: any) {
+    const url = `/auth/logout/${id}`;
+    return axiosClient.post(url);
+  },
+
+  refreshToken(refreshToken: string) {
+    const url = '/auth/refresh';
+    return axiosClient.post(url, refreshToken);
+  },
+
+  get(id: string) {
+    const url = `/auth/user/${id}`;
+    return axiosClient.get(url);
+  },
 };
 
 export default userApi;

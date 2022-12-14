@@ -6,48 +6,71 @@ import storage from 'redux-persist/lib/storage';
 
 export const login = createAsyncThunk('user/login', async (payload: ILogin) => {
   const data: any = await userApi.login(payload);
-  await storage.setItem('access_token', data.token);
-  await storage.setItem('user', JSON.stringify(data.user));
-  return { user: data.user, token: data.token };
+  await storage.setItem('access_token', data.accessToken);
+  await storage.setItem('refresh_token', data.refreshToken);
+  const userData: any = await userApi.get(data.userId);
+  await storage.setItem('user', JSON.stringify(userData.user));
+  return {
+    user: userData.user,
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  };
 });
 
+export const logout = createAsyncThunk(
+  'user/logout',
+  async (_, { getState }) => {
+    const state = getState() as any;
+    await userApi.logout(state.user._id);
+    storage.removeItem('refresh_token');
+    storage.removeItem('access_token');
+    storage.removeItem('user');
+    return { accessToken: '', refreshToken: '', user: {} };
+  }
+);
+
 type UserType = {
-  token?: string;
   user: any;
+  accessToken: string;
+  refreshToken: string;
 };
 
 const initialState: UserType = {
-  token: '',
   user: {},
+  accessToken: '',
+  refreshToken: '',
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logout: (state) => {
-      storage.removeItem('access_token');
-      storage.removeItem('user');
-      state.token = '';
-      state.user = {};
-    },
     setUser: (state, action) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
     });
     builder.addCase(login.rejected, (state, action) => {
-      console.log(action.error);
+      throw action.error;
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      throw action.error;
     });
   },
 });
 
-export const { logout } = userSlice.actions;
 export const { setUser } = userSlice.actions;
 
 export const user = (state: RootState) => state.user;

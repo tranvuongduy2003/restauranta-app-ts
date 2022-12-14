@@ -42,7 +42,8 @@ const LoginPage: React.FC = () => {
       await dispatch(login(data));
       toast.success('Đăng nhập thành công');
       navigate('/');
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error.message);
       console.log(error);
     }
   };

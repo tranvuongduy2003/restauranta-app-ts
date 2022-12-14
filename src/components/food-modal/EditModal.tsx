@@ -96,7 +96,7 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
 
   const handleAddImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.item(0);
-    const storageRef = ref(storage, 'categories/' + file?.name);
+    const storageRef = ref(storage, 'images/' + file?.name);
     setLoading(true);
     const uploadTask = uploadBytesResumable(storageRef, file as any);
     uploadTask.on(
