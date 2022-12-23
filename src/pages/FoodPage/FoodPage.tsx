@@ -1,8 +1,8 @@
 import categoryApi from 'api/categoryApi';
 import foodApi from 'api/foodApi';
-import DeleteAction from 'components/food-modal/actions/DeleteAction';
+import DeleteAction from 'components/actions/DeleteAction';
 import UpdateAction from 'components/food-modal/actions/UpdateAction';
-import ViewAction from 'components/food-modal/actions/ViewAction';
+import ViewAction from 'components/actions/ViewAction';
 import { Dropdown } from 'components/dropdown';
 import Search from 'components/Search';
 import Table from 'components/Table';
@@ -11,8 +11,12 @@ import Heading from '../Dashboard/Heading';
 import Pagination from 'components/Pagination';
 import FoodSkeleton from 'components/skeleton/FoodSkeleton';
 import { ICategory, IFood } from 'utils/interface';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import ViewModal from 'components/food-modal/ViewModal';
 
-const ProductPage: React.FC = () => {
+const FoodPage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectCategory, setSelectCategory] = useState<ICategory>();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>('');
@@ -62,6 +66,21 @@ const ProductPage: React.FC = () => {
       setLoading(false);
     }
   }, [page, selectCategory, search]);
+
+  const handleDeleteItem = async (id: string) => {
+    try {
+      if (id) {
+        await foodApi.remove(id);
+      } else {
+        throw new Error('id not found');
+      }
+      toast.success('Xóa món ắn thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Xóa món ăn thất bại!');
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -156,16 +175,20 @@ const ProductPage: React.FC = () => {
                 </td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
-                    <ViewAction
-                      item={{
-                        ...food,
-                        categoryName: categories.find(
-                          (category) => category._id === food.categoryId
-                        )?.name,
-                      }}
-                    ></ViewAction>
+                    <ViewAction>
+                      <ViewModal
+                        item={{
+                          ...food,
+                          categoryName: categories.find(
+                            (category) => category._id === food.categoryId
+                          )?.name,
+                        }}
+                      ></ViewModal>
+                    </ViewAction>
                     <UpdateAction item={food}></UpdateAction>
-                    <DeleteAction id={food._id}></DeleteAction>
+                    <DeleteAction
+                      onClick={() => handleDeleteItem(food._id || '')}
+                    ></DeleteAction>
                   </div>
                 </td>
               </tr>
@@ -183,7 +206,7 @@ const ProductPage: React.FC = () => {
       </Table>
       <Pagination
         currentPage={page}
-        lastPage={Math.ceil(totalItems / 5)}
+        lastPage={Math.ceil((totalItems === 0 ? 1 : totalItems) / 5)}
         increase={() => {
           page !== Math.ceil(totalItems / 5) && setPage(page + 1);
         }}
@@ -195,4 +218,4 @@ const ProductPage: React.FC = () => {
   );
 };
 
-export default ProductPage;
+export default FoodPage;

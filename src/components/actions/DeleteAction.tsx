@@ -1,33 +1,14 @@
 import React from 'react';
-import { toast } from 'react-toastify';
-import foodApi from 'api/foodApi';
-import { useNavigate } from 'react-router-dom';
 
-interface IDeleteAction {
-  id?: string;
+interface IDeleteActionProps {
+  onClick: () => void;
 }
 
-const DeleteAction: React.FC<IDeleteAction> = ({ id }) => {
-  const navigate = useNavigate();
-  const handleDeleteItem = async () => {
-    try {
-      if (id) {
-        await foodApi.remove(id);
-      } else {
-        throw new Error('id not found');
-      }
-      navigate(0);
-      toast.success('Xóa món ăn thành công!');
-    } catch (error) {
-      toast.error('Xóa món ăn thất bại!');
-      console.log(error);
-    }
-  };
-
+const DeleteAction: React.FC<IDeleteActionProps> = ({ onClick }) => {
   return (
     <span
       className="flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer"
-      onClick={handleDeleteItem}
+      onClick={onClick}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

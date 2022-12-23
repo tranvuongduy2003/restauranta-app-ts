@@ -37,26 +37,22 @@ axiosClient.interceptors.response.use(
   async function (err: any) {
     const originalConfig = err.config;
 
-    if (err.response) {
-      if (err.response.status === 401 && !originalConfig._retry) {
-        originalConfig._retry = true;
+    if (err?.response?.status === 401 && !originalConfig.sent) {
+      originalConfig.sent = true;
+      try {
+        const accessToken = await refreshToken();
+        originalConfig.headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        }
+        return axiosClient(originalConfig);
+      } catch (error: any) {
 
-        try {
-          const accessToken = await refreshToken();
-          axiosClient.defaults.headers.common = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-          };
-
-          return axiosClient(originalConfig);
-        } catch (error: any) {
-          if (error.response && error.response.data) {
-            return Promise.reject(error.response.data);
-          }
-
-          return Promise.reject(error);
+        if (error.response && error.response.data) {
+          return Promise.reject(error.response.data);
         }
       }
+      return Promise.reject(err);
     }
 
     console.log(err);

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import Modal from 'components/category-modal/Modal';
+import Modal from 'components/modal/Modal';
 import EditModal from 'components/category-modal/EditModal';
 import { useNavigate } from 'react-router-dom';
 import { ICategory } from 'utils/interface';

@@ -1,23 +1,15 @@
 import React, { Fragment, useState } from 'react';
-import Modal from 'components/food-modal/Modal';
-import ViewModal from 'components/food-modal/ViewModal';
-import { IFood } from 'utils/interface';
+import Modal from 'components/modal/Modal';
 
 interface IViewActionProps {
-  item: IFood & {
-    categoryName?: string;
-  };
+  children: React.ReactElement;
 }
 
-const ViewAction: React.FC<IViewActionProps> = ({ item }) => {
+const ViewAction: React.FC<IViewActionProps> = ({ children }) => {
   const [show, setShow] = useState(false);
   return (
     <Fragment>
-      {show && (
-        <Modal handleClose={() => setShow(false)}>
-          <ViewModal item={item}></ViewModal>
-        </Modal>
-      )}
+      {show && <Modal handleClose={() => setShow(false)}>{children}</Modal>}
       <span
         className="flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer"
         onClick={() => setShow(true)}

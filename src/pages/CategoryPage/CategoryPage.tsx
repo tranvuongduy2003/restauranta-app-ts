@@ -1,7 +1,7 @@
 import categoryApi from 'api/categoryApi';
-import DeleteAction from 'components/category-modal/actions/DeleteAction';
+import DeleteAction from 'components/actions/DeleteAction';
 import UpdateAction from 'components/category-modal/actions/UpdateAction';
-import ViewAction from 'components/category-modal/actions/ViewAction';
+import ViewAction from 'components/actions/ViewAction';
 import Search from 'components/Search';
 import Table from 'components/Table';
 import Heading from 'pages/Dashboard/Heading';
@@ -9,8 +9,12 @@ import React, { useEffect, useState } from 'react';
 import Pagination from 'components/Pagination';
 import CategorySkeleton from 'components/skeleton/CategorySkeleton';
 import { ICategory } from 'utils/interface';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import ViewModal from 'components/category-modal/ViewModal';
 
 const CategoryPage: React.FC = () => {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
@@ -50,22 +54,37 @@ const CategoryPage: React.FC = () => {
     }
   }, [page, search]);
 
+  const handleDeleteItem = async (id: string) => {
+    try {
+      if (id) {
+        await categoryApi.remove(id);
+      } else {
+        throw new Error('id not found');
+      }
+      toast.success('Xóa danh mục thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Xóa danh mục thất bại!');
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Heading
-        title="Danh mục"
-        desc="Quản lý tất cả danh mục"
+        title="Loại món"
+        desc="Quản lý tất cả loại món ăn"
         addUrl="/category/add-new"
-        addTitle="Thêm danh mục"
+        addTitle="Thêm loại mới"
         deleteUrl="/category/deleted"
-        deleteTitle="Danh mục đã xóa"
+        deleteTitle="Loại món đã xóa"
       ></Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[400px]">
           <Search
             handleInputChange={setSearch}
             name="search"
-            placeholder="Tìm kiếm danh mục..."
+            placeholder="Tìm kiếm loại món ăn..."
           ></Search>
         </div>
       </div>
@@ -104,9 +123,13 @@ const CategoryPage: React.FC = () => {
                 <td>{category.foods && category.foods.length}</td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
-                    <ViewAction item={category}></ViewAction>
+                    <ViewAction>
+                      <ViewModal item={category}></ViewModal>
+                    </ViewAction>
                     <UpdateAction item={category}></UpdateAction>
-                    <DeleteAction id={category._id}></DeleteAction>
+                    <DeleteAction
+                      onClick={() => handleDeleteItem(category._id || '')}
+                    ></DeleteAction>
                   </div>
                 </td>
               </tr>
@@ -124,7 +147,7 @@ const CategoryPage: React.FC = () => {
       </Table>
       <Pagination
         currentPage={page}
-        lastPage={Math.ceil(totalItems / 5)}
+        lastPage={Math.ceil((totalItems === 0 ? 1 : totalItems) / 5)}
         increase={() => {
           page !== Math.ceil(totalItems / 5) && setPage(page + 1);
         }}

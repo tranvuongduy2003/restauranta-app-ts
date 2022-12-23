@@ -4,8 +4,17 @@ import React, { useEffect, useState } from 'react';
 import Search from 'components/Search';
 import userApi from 'api/userApi';
 import { IUser } from 'utils/interface';
+import Pagination from 'components/Pagination';
+import UserSkeleton from 'components/skeleton/UserSkeleton';
+import DeleteAction from 'components/actions/DeleteAction';
+import UpdateAction from 'components/user-modal/actions/UpdateAction';
+import ViewAction from 'components/actions/ViewAction';
+import ViewModal from 'components/user-modal/ViewModal';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const UserPage: React.FC = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState<IUser[]>([]);
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
@@ -44,6 +53,21 @@ const UserPage: React.FC = () => {
       console.error(error);
     }
   }, [page, search]);
+
+  const handleDeleteUser = async (id: string) => {
+    try {
+      if (id) {
+        // await userApi.remove(id);
+      } else {
+        throw new Error('id not found');
+      }
+      toast.success('Xóa người dùng thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Xóa người dùng thất bại!');
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -93,23 +117,41 @@ const UserPage: React.FC = () => {
                   <span className="text-gray-500">{user.email}</span>
                 </td>
                 <td>
-                  <span className="text-gray-500">0999999999</span>
+                  <span className="text-gray-500">{user.phoneNumber}</span>
                 </td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
-                    {/* Chua lam */}
-                    {/* <ViewAction></ViewAction>
-                    <UpdateAction></UpdateAction>
-                    <DeleteAction></DeleteAction> */}
+                    <ViewAction>
+                      <ViewModal item={user}></ViewModal>
+                    </ViewAction>
+                    <UpdateAction item={user}></UpdateAction>
+                    <DeleteAction
+                      onClick={() => handleDeleteUser(user._id || '')}
+                    ></DeleteAction>
                   </div>
                 </td>
               </tr>
             ))
           ) : (
-            <></>
+            <>
+              <UserSkeleton></UserSkeleton>
+              <UserSkeleton></UserSkeleton>
+              <UserSkeleton></UserSkeleton>
+              <UserSkeleton></UserSkeleton>
+            </>
           )}
         </tbody>
       </Table>
+      <Pagination
+        currentPage={page}
+        lastPage={Math.ceil((totalItems === 0 ? 1 : totalItems) / 5)}
+        increase={() => {
+          page !== Math.ceil(totalItems / 5) && setPage(page + 1);
+        }}
+        decrease={() => {
+          page !== 1 && setPage(page - 1);
+        }}
+      ></Pagination>
     </div>
   );
 };

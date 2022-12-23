@@ -42,9 +42,9 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectCategory, setSelectCategory] = useState<ICategory>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentImages, setCurrentImages] = useState<Image[]>([
-    item.images,
-  ] as Image[]);
+  const [currentImages, setCurrentImages] = useState<Image[]>(
+    item.images || []
+  );
   const [deletedImages, setDeletedImages] = useState<Image[]>([]);
   // const [uploadImages, setUploadImages] = useState(item.images);
   const {
@@ -83,8 +83,7 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
     } catch (error) {
       console.error(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [item.categoryId]);
 
   const watchBest = watch('bestDeals');
   const watchPopular = watch('popular');

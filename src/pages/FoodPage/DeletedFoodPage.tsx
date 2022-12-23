@@ -1,7 +1,7 @@
 import categoryApi from 'api/categoryApi';
 import foodApi from 'api/foodApi';
-import DeleteAction from 'components/food-modal/actions/DeleteAction';
-import ViewAction from 'components/food-modal/actions/ViewAction';
+import DeleteAction from 'components/actions/DeleteAction';
+import ViewAction from 'components/actions/ViewAction';
 import { Dropdown } from 'components/dropdown';
 import Search from 'components/Search';
 import Table from 'components/Table';
@@ -10,8 +10,12 @@ import Heading from '../Dashboard/Heading';
 import Pagination from 'components/Pagination';
 import FoodSkeleton from 'components/skeleton/FoodSkeleton';
 import { ICategory, IFood } from 'utils/interface';
+import ViewModal from 'components/food-modal/ViewModal';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const DeletedFoodPage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectCategory, setSelectCategory] = useState<ICategory>();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>('');
@@ -61,6 +65,21 @@ const DeletedFoodPage: React.FC = () => {
       setLoading(false);
     }
   }, [page, selectCategory, search]);
+
+  const handleDeletePermanently = async (id: string) => {
+    try {
+      if (id) {
+        await foodApi.removeFromDeleted(id);
+      } else {
+        throw new Error('id not found');
+      }
+      toast.success('Xóa món ăn thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Xóa món ăn thất bại!');
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -153,15 +172,19 @@ const DeletedFoodPage: React.FC = () => {
                 </td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
-                    <ViewAction
-                      item={{
-                        ...food,
-                        categoryName: categories.find(
-                          (category) => category._id === food.categoryId
-                        )?.name,
-                      }}
-                    ></ViewAction>
-                    <DeleteAction id={food._id}></DeleteAction>
+                    <ViewAction>
+                      <ViewModal
+                        item={{
+                          ...food,
+                          categoryName: categories.find(
+                            (category) => category._id === food.categoryId
+                          )?.name,
+                        }}
+                      ></ViewModal>
+                    </ViewAction>
+                    <DeleteAction
+                      onClick={() => handleDeletePermanently(food._id || '')}
+                    ></DeleteAction>
                   </div>
                 </td>
               </tr>
@@ -179,7 +202,7 @@ const DeletedFoodPage: React.FC = () => {
       </Table>
       <Pagination
         currentPage={page}
-        lastPage={Math.ceil(totalItems / 5)}
+        lastPage={Math.ceil((totalItems === 0 ? 1 : totalItems) / 5)}
         increase={() => {
           page !== Math.ceil(totalItems / 5) && setPage(page + 1);
         }}

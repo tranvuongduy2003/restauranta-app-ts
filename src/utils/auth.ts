@@ -6,7 +6,8 @@ export function getAccessToken() {
 }
 
 export async function refreshToken() {
-  const refreshToken: string = localStorage.getItem('refresh_token') as any;
-  const accessToken = await userApi.refreshToken(refreshToken);
+  const refreshToken: string = localStorage.getItem('refresh_token') as string;
+  const { accessToken } = (await userApi.refreshToken(refreshToken)) as any;
+  localStorage.setItem('access_token', accessToken);
   return accessToken;
 }

@@ -55,6 +55,7 @@ export interface IUser {
   email?: string;
   name?: string;
   cart?: ICart[];
+  phoneNumber?: string;
   createdAt?: Date;
   updatedAt?: Date;
   role?: string;

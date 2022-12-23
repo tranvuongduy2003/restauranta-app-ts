@@ -18,12 +18,17 @@ const userApi = {
 
   refreshToken(refreshToken: string) {
     const url = '/auth/refresh';
-    return axiosClient.post(url, refreshToken);
+    return axiosClient.post(url, { refreshToken });
   },
 
   get(id: string) {
     const url = `/auth/user/${id}`;
     return axiosClient.get(url);
+  },
+
+  editUser(id: string, payload: any) {
+    const url = `/admin/user/${id}`;
+    return axiosClient.post(url, payload);
   },
 };
 

@@ -1,19 +1,28 @@
 import React, { Fragment, useState } from 'react';
-import Modal from 'components/food-modal/Modal';
-import ViewModal from 'components/category-modal/ViewModal';
-import { ICategory } from 'utils/interface';
+import Modal from 'components/modal/Modal';
+import EditModal from 'components/user-modal/EditModal';
+import { useNavigate } from 'react-router-dom';
+import { IUser } from 'utils/interface';
 
-interface IViewActionProps {
-  item: ICategory;
+interface IUpdateActionProps {
+  item: IUser;
 }
 
-const ViewAction: React.FC<IViewActionProps> = ({ item }) => {
+const UpdateAction: React.FC<IUpdateActionProps> = ({ item }) => {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <Fragment>
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <ViewModal item={item}></ViewModal>
+          <EditModal
+            handleClose={() => {
+              setShow(false);
+              navigate(0);
+            }}
+            item={item}
+          ></EditModal>
         </Modal>
       )}
       <span
@@ -31,12 +40,7 @@ const ViewAction: React.FC<IViewActionProps> = ({ item }) => {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
           />
         </svg>
       </span>
@@ -44,4 +48,4 @@ const ViewAction: React.FC<IViewActionProps> = ({ item }) => {
   );
 };
 
-export default ViewAction;
+export default UpdateAction;

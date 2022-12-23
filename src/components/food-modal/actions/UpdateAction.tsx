@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import Modal from 'components/food-modal/Modal';
+import Modal from 'components/modal/Modal';
 import EditModal from 'components/food-modal/EditModal';
 import { useNavigate } from 'react-router-dom';
 import { IFood } from 'utils/interface';

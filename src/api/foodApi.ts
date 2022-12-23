@@ -37,6 +37,11 @@ const foodApi = {
     const url: string = `/admin/food/${id}`;
     return axiosClient.delete<IFood>(url);
   },
+
+  removeFromDeleted(id: string) {
+    const url: string = `/admin/food/bin/${id}`;
+    return axiosClient.delete<IFood>(url);
+  },
 };
 
 export default foodApi;

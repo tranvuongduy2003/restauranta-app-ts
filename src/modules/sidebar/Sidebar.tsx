@@ -45,7 +45,7 @@ const sidebarLinks = [
     ),
   },
   {
-    title: 'Danh mục',
+    title: 'Loại món',
     url: '/category',
     icon: (
       <svg
