@@ -10,8 +10,8 @@ import DeleteAction from 'components/actions/DeleteAction';
 import { IReservation } from 'utils/interface';
 import Status from 'components/status/Status';
 import ViewAction from 'components/actions/ViewAction';
-import ViewModal from 'components/reservation-model/ViewModal';
-import UpdateAction from 'components/reservation-model/actions/UpdateAction';
+import ViewModal from 'components/reservation-modal/ViewModal';
+import UpdateAction from 'components/reservation-modal/actions/UpdateAction';
 import { Dropdown } from 'components/dropdown';
 
 interface IBookingPageProps {}

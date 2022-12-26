@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import Modal from 'components/modal/Modal';
-import EditModal from 'components/user-modal/EditModal';
+import EditModal from 'components/reservation-modal/EditModal';
 import { useNavigate } from 'react-router-dom';
 import { IUser } from 'utils/interface';
 
