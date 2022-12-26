@@ -26,7 +26,7 @@ const UpdateAction: React.FC<IUpdateActionProps> = ({ item }) => {
         </Modal>
       )}
       <span
-        className="flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer"
+        className="flex items-center justify-center w-10 h-10 border-2 rounded cursor-pointer text-sky-600 border-sky-400"
         onClick={() => setShow(true)}
       >
         <svg

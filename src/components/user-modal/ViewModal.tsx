@@ -1,50 +1,55 @@
-import foodApi from 'api/foodApi';
-import React, { useEffect, useState } from 'react';
-import { ICategory, IFood } from 'utils/interface';
+import Field from 'components/Field';
+import Label from 'components/Label';
+import React from 'react';
+import { IUser } from 'utils/interface';
 
 interface IViewModalProps {
-  item: ICategory;
+  item: IUser;
 }
 
 const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
-  const [foods, setFoods] = useState<IFood[]>([]);
-
-  useEffect(() => {
-    const handleFetchFoods = async () => {
-      try {
-        const data: any = await foodApi.getAll();
-        const foods = { ...data.foods };
-        setFoods(foods.filter((food: IFood) => food.categoryId === item._id));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    handleFetchFoods();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
-    <div className="grid grid-cols-2 gap-x-10">
-      <div className="flex flex-col justify-start gap-6">
-        <div className="flex flex-col items-start gap-y-[10px]">
-          <h3 className="font-medium cursor-pointer">Tên món ăn</h3>
-          <p>{item.name}</p>
-        </div>
-        <div className="flex flex-col items-start gap-y-[10px]">
-          <h3 className="font-medium cursor-pointer">Số lượng món</h3>
-          <p>{item.foods?.length}</p>
-        </div>
-        <div className="flex flex-col items-start gap-y-[10px]">
-          <h3 className="font-medium cursor-pointer">Món ăn</h3>
-          {foods.length > 0 && foods.map((food) => <p>{food.name}</p>)}
+    <div className="">
+      <div className="mx-auto mb-10">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="relative">
+            <img
+              src={`${
+                item?.avatar?.url
+                  ? item?.avatar?.url
+                  : 'https://tinhayvip.com/wp-content/uploads/2022/04/meme-ech-xanh-5.jpg'
+              }`}
+              alt=""
+              className="object-cover w-32 h-32 rounded-full"
+            />
+          </div>
         </div>
       </div>
-      <div className="mb-2">
-        <img
-          src={item.image}
-          alt=""
-          className="object-cover w-full h-[350px] rounded-sm"
-        />
+      <div className="grid grid-cols-2 gap-10">
+        <div className="flex flex-col justify-start w-full gap-5 mx-auto">
+          <Field>
+            <Label name="name">Tên người dùng</Label>
+            <div>{item.name}</div>
+          </Field>
+          <Field>
+            <Label name="email">Email</Label>
+            <div>{item.email}</div>
+          </Field>
+          <Field>
+            <Label name="address">Địa chỉ</Label>
+            {item?.address || ''}
+          </Field>
+        </div>
+        <div className="flex flex-col justify-start w-full gap-5 mx-auto">
+          <Field>
+            <Label name="phoneNumber">Số điện thoại</Label>
+            <div>{item.phoneNumber}</div>
+          </Field>
+          <Field>
+            <Label name="role">Phân quyền</Label>
+            <div>{item.role}</div>
+          </Field>
+        </div>
       </div>
     </div>
   );

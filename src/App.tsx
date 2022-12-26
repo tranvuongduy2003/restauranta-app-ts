@@ -6,6 +6,8 @@ import ProtectedRoute from 'components/ProtectedRoute';
 import CategoryAddNew from 'pages/CategoryPage/CategoryAddNew';
 import DeletedFoodPage from 'pages/FoodPage/DeletedFoodPage';
 import DeletedCategoryPage from 'pages/CategoryPage/DeletedCategoryPage';
+import DeletedUserPage from 'pages/UserPage/DeletedUserPage';
+import BookingPage from 'pages/BookingPage/BookingPage';
 const PageNotFound = lazy(() => import('pages/PageNotFound/PageNotFound'));
 const LoginPage = lazy(() => import('pages/LoginPage/LoginPage'));
 const CategoryPage = lazy(() => import('pages/CategoryPage/CategoryPage'));
@@ -41,6 +43,15 @@ const App: React.FC = () => {
               element={<DeletedFoodPage></DeletedFoodPage>}
             ></Route>
             <Route path="/user" element={<UserPage></UserPage>}></Route>
+            <Route
+              path="/user/deleted"
+              element={<DeletedUserPage></DeletedUserPage>}
+            ></Route>
+            <Route
+              path="/booking"
+              element={<BookingPage></BookingPage>}
+            ></Route>
+            <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
           </Route>
           <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
           <Route path="/login" element={<LoginPage></LoginPage>}></Route>

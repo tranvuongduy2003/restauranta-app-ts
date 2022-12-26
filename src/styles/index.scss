@@ -35,3 +35,21 @@ th {
 td {
   padding: 15px 30px;
 }
+
+.rc-time-picker-panel-input-wrap {
+  display: none;
+}
+
+.rc-time-picker-panel-inner {
+  margin-top: 5px;
+}
+
+.rc-time-picker-panel-select {
+  font-size: 16px !important;
+  width: auto !important;
+  padding: 10px;
+  max-height: 250px !important;
+}
+.rc-time-picker-panel-combobox {
+  display: flex !important;
+}

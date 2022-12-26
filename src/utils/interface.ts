@@ -53,10 +53,26 @@ export interface ICart {
 export interface IUser {
   _id?: string;
   email?: string;
+  avatar?: {
+    url?: string;
+    ref?: string;
+  };
+  address?: string;
   name?: string;
   cart?: ICart[];
   phoneNumber?: string;
   createdAt?: Date;
   updatedAt?: Date;
   role?: string;
+}
+
+export interface IReservation {
+  _id?: string;
+  name?: string;
+  phoneNumber?: string;
+  bookingDate?: string;
+  bookingTime?: string;
+  userId?: string;
+  status?: string;
+  quantity?: string;
 }

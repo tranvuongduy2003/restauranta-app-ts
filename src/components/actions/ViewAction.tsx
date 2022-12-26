@@ -11,7 +11,7 @@ const ViewAction: React.FC<IViewActionProps> = ({ children }) => {
     <Fragment>
       {show && <Modal handleClose={() => setShow(false)}>{children}</Modal>}
       <span
-        className="flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer"
+        className="flex items-center justify-center w-10 h-10 text-yellow-600 border-2 border-yellow-400 rounded cursor-pointer"
         onClick={() => setShow(true)}
       >
         <svg

@@ -5,6 +5,7 @@ type IInputProps = {
   type?: React.InputHTMLAttributes<HTMLInputElement>['type'];
   placeholder?: string;
   hasIcon?: boolean;
+  disabled?: any;
 } & UseControllerProps;
 
 const Input: FC<IInputProps> = ({

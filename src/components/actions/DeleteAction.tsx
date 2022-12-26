@@ -7,7 +7,7 @@ interface IDeleteActionProps {
 const DeleteAction: React.FC<IDeleteActionProps> = ({ onClick }) => {
   return (
     <span
-      className="flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer"
+      className="flex items-center justify-center w-10 h-10 text-red-400 border-2 border-red-400 rounded cursor-pointer"
       onClick={onClick}
     >
       <svg

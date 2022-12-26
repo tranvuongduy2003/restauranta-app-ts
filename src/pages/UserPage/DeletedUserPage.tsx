@@ -7,13 +7,12 @@ import { IUser } from 'utils/interface';
 import Pagination from 'components/Pagination';
 import UserSkeleton from 'components/skeleton/UserSkeleton';
 import DeleteAction from 'components/actions/DeleteAction';
-import UpdateAction from 'components/user-modal/actions/UpdateAction';
 import ViewAction from 'components/actions/ViewAction';
 import ViewModal from 'components/user-modal/ViewModal';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const UserPage: React.FC = () => {
+const DeletedUserPage: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<IUser[]>([]);
   const [search, setSearch] = useState<string>('');
@@ -25,7 +24,7 @@ const UserPage: React.FC = () => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const data: any = await userApi.getAll(1);
+        const data: any = await userApi.getDeletedUser(1);
         const { users, totalItems } = data;
         setUsers(users);
         setTotalItems(totalItems);
@@ -42,7 +41,7 @@ const UserPage: React.FC = () => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const data: any = await userApi.getAll(page, search);
+        const data: any = await userApi.getDeletedUser(page, search);
         const { users } = data;
         setUsers(users);
         setLoading(false);
@@ -57,7 +56,7 @@ const UserPage: React.FC = () => {
   const handleDeleteUser = async (id: string) => {
     try {
       if (id) {
-        await userApi.deleteUser(id);
+        await userApi.deleteUserPermanently(id);
       } else {
         throw new Error('id not found');
       }
@@ -74,8 +73,8 @@ const UserPage: React.FC = () => {
       <Heading
         title="Người dùng"
         desc="Quản lý tất cả người dùng"
-        deleteUrl="/user/deleted"
-        deleteTitle="Người dùng đã xóa"
+        backUrl="/user"
+        backTitle="Trở về"
       ></Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[300px]">
@@ -132,7 +131,6 @@ const UserPage: React.FC = () => {
                     <ViewAction>
                       <ViewModal item={user}></ViewModal>
                     </ViewAction>
-                    <UpdateAction item={user}></UpdateAction>
                     <DeleteAction
                       onClick={() => handleDeleteUser(user._id || '')}
                     ></DeleteAction>
@@ -164,4 +162,4 @@ const UserPage: React.FC = () => {
   );
 };
 
-export default UserPage;
+export default DeletedUserPage;
