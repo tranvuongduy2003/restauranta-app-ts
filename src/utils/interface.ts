@@ -75,4 +75,19 @@ export interface IReservation {
   userId?: string;
   status?: string;
   quantity?: string;
+  desc?: string;
+}
+
+export interface IOrder {
+  _id?: string;
+  userId?: string;
+  name?: string;
+  phoneNumber?: string;
+  address?: string;
+  method?: string;
+  status?: string;
+  items?: any;
+  totalPrice?: Number;
+  desc?: string;
+  action?: string;
 }

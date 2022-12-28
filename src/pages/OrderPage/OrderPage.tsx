@@ -5,20 +5,20 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Table from 'components/Table';
 import Pagination from 'components/Pagination';
-import reservationApi from 'api/reservationApi';
-import DeleteAction from 'components/actions/DeleteAction';
-import { IReservation } from 'utils/interface';
+import orderApi from 'api/orderApi';
+import { IOrder } from 'utils/interface';
 import Status from 'components/status/Status';
-import ViewAction from 'components/actions/ViewAction';
-import ViewModal from 'components/reservation-modal/ViewModal';
-import UpdateAction from 'components/reservation-modal/actions/UpdateAction';
 import { Dropdown } from 'components/dropdown';
+import DeleteAction from 'components/actions/DeleteAction';
+import UpdateAction from 'components/order-modal/actions/UpdateAction';
+import ViewAction from 'components/actions/ViewAction';
+import ViewModal from 'components/order-modal/ViewModal';
 
-interface IBookingPageProps {}
+interface IOrderPageProps {}
 
-const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
+const OrderPage: React.FunctionComponent<IOrderPageProps> = (props) => {
   const navigate = useNavigate();
-  const [reservations, setReservations] = useState<IReservation[]>([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
@@ -29,9 +29,9 @@ const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const data: any = await reservationApi.getAll(1);
-        const { reservations, totalItems } = data;
-        setReservations(reservations);
+        const data: any = await orderApi.getAll(1);
+        const { orders, totalItems } = data;
+        setOrders(orders);
         setTotalItems(totalItems);
         setLoading(false);
       };
@@ -46,13 +46,9 @@ const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
     try {
       const handleFetchData = async () => {
         setLoading(true);
-        const data: any = await reservationApi.getAll(
-          page,
-          search,
-          selectedStatus
-        );
-        const { reservations, totalItems } = data;
-        setReservations(reservations);
+        const data: any = await orderApi.getAll(page, search, selectedStatus);
+        const { orders, totalItems } = data;
+        setOrders(orders);
         setTotalItems(totalItems);
         setLoading(false);
       };
@@ -63,10 +59,10 @@ const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
     }
   }, [page, search, selectedStatus]);
 
-  const handleDeleteReservation = async (id: string) => {
+  const handleDeleteOrder = async (id: string) => {
     try {
       if (id) {
-        await reservationApi.deleteReservation(id);
+        await orderApi.deleteOrder(id);
         toast.success('Xóa người dùng thành công!');
       } else {
         throw new Error('id not found');
@@ -80,14 +76,14 @@ const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
 
   return (
     <div>
-      <Heading title="Đặt chỗ" desc="Quản lý lịch đặt chỗ"></Heading>
+      <Heading title="Đơn hàng" desc="Quản lý toàn bộ đơn hàng"></Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="flex items-center flex-1 gap-5">
           <div className="w-full max-w-[300px]">
             <Search
               handleInputChange={setSearch}
               name="search"
-              placeholder="Tìm kiếm đơn đặt..."
+              placeholder="Tìm kiếm đơn hàng..."
             ></Search>
           </div>
         </div>
@@ -123,49 +119,53 @@ const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Họ tên</th>
-            <th>Ngày đặt</th>
-            <th>Thời gian</th>
-            <th>Số lượng</th>
+            <th>Người đặt</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
+            <th>Phương thức</th>
+            <th>Tình trạng</th>
             <th>Trạng thái</th>
+            <th>Tổng tiền</th>
             <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
           {!loading ? (
-            reservations?.length > 0 &&
-            reservations.map((reservation) => (
-              <tr key={reservation._id}>
-                <td>{reservation._id}</td>
+            orders?.length > 0 &&
+            orders.map((order) => (
+              <tr key={order._id}>
+                <td>{order._id}</td>
                 <td>
-                  <span className="text-gray-500">{reservation.name}</span>
+                  <span className="text-gray-500">{order.name}</span>
+                </td>
+                <td>
+                  <span className="text-gray-500">{order.phoneNumber}</span>
+                </td>
+                <td>
+                  <span className="text-gray-500">{order.address}</span>
+                </td>
+                <td>
+                  <span className="text-gray-500">{order.action}</span>
+                </td>
+                <td>
+                  <span className="text-gray-500">{order.method}</span>
+                </td>
+                <td>
+                  <Status statusProps={order.status}></Status>
                 </td>
                 <td>
                   <span className="text-gray-500">
-                    {reservation.bookingDate}
+                    {order.totalPrice?.toString()}
                   </span>
-                </td>
-                <td>
-                  <span className="text-gray-500">
-                    {reservation.bookingTime}
-                  </span>
-                </td>
-                <td>
-                  <span className="text-gray-500">{reservation.quantity}</span>
-                </td>
-                <td>
-                  <Status statusProps={reservation.status}></Status>
                 </td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
                     <ViewAction>
-                      <ViewModal item={reservation}></ViewModal>
+                      <ViewModal item={order}></ViewModal>
                     </ViewAction>
-                    <UpdateAction item={reservation}></UpdateAction>
+                    <UpdateAction item={order}></UpdateAction>
                     <DeleteAction
-                      onClick={() =>
-                        handleDeleteReservation(reservation._id as string)
-                      }
+                      onClick={() => handleDeleteOrder(order._id as string)}
                     ></DeleteAction>
                   </div>
                 </td>
@@ -190,4 +190,4 @@ const BookingPage: React.FunctionComponent<IBookingPageProps> = (props) => {
   );
 };
 
-export default BookingPage;
+export default OrderPage;

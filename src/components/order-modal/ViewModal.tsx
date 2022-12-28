@@ -1,14 +1,34 @@
 import Field from 'components/Field';
 import Label from 'components/Label';
 import Status from 'components/status/Status';
-import React from 'react';
-import { IReservation } from 'utils/interface';
+import { method } from 'constants/method';
+import React, { useEffect, useState } from 'react';
+import { IOrder } from 'utils/interface';
 
 interface IViewModalProps {
-  item: IReservation;
+  item: IOrder;
 }
 
 const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
+  const [methodPlaceholder, setMethodPlaceholder] = useState('');
+
+  useEffect(() => {
+    switch (item.method) {
+      case method.DIRECT.id:
+        setMethodPlaceholder(method.DIRECT.title);
+        break;
+      case method.BANKING.id:
+        setMethodPlaceholder(method.BANKING.title);
+        break;
+      case method.MOMO.id:
+        setMethodPlaceholder(method.MOMO.title);
+        break;
+
+      default:
+        break;
+    }
+  }, [item.method]);
+
   return (
     <div className="">
       <div className="grid grid-cols-2 gap-10">
@@ -29,19 +49,19 @@ const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
             <Label>Số điện thoại</Label>
             <div>{item.phoneNumber}</div>
           </Field>
+          <Field>
+            <Label>Địa chỉ</Label>
+            <div>{item.address}</div>
+          </Field>
         </div>
         <div className="flex flex-col justify-start w-full gap-5 mx-auto">
           <Field>
-            <Label>Ngày đặt</Label>
-            {item.bookingDate}
+            <Label>Phương thức</Label>
+            <div>{methodPlaceholder}</div>
           </Field>
           <Field>
-            <Label>Giờ đặt</Label>
-            {item.bookingTime}
-          </Field>
-          <Field>
-            <Label>Số lượng người</Label>
-            <div>{item.quantity}</div>
+            <Label>Tổng tiền</Label>
+            <div>{item.totalPrice?.toString()}</div>
           </Field>
           <Field>
             <Label>Trạng thái</Label>

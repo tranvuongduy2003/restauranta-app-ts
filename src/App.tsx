@@ -8,6 +8,7 @@ import DeletedFoodPage from 'pages/FoodPage/DeletedFoodPage';
 import DeletedCategoryPage from 'pages/CategoryPage/DeletedCategoryPage';
 import DeletedUserPage from 'pages/UserPage/DeletedUserPage';
 import BookingPage from 'pages/BookingPage/BookingPage';
+import OrderPage from 'pages/OrderPage/OrderPage';
 const PageNotFound = lazy(() => import('pages/PageNotFound/PageNotFound'));
 const LoginPage = lazy(() => import('pages/LoginPage/LoginPage'));
 const CategoryPage = lazy(() => import('pages/CategoryPage/CategoryPage'));
@@ -51,6 +52,7 @@ const App: React.FC = () => {
               path="/booking"
               element={<BookingPage></BookingPage>}
             ></Route>
+            <Route path="/orders" element={<OrderPage></OrderPage>}></Route>
             <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
           </Route>
           <Route path="*" element={<PageNotFound></PageNotFound>}></Route>

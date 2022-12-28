@@ -47,6 +47,11 @@ const userApi = {
     }`;
     return axiosClient.get(url);
   },
+
+  recover(id: string) {
+    const url: string = `/admin/user/${id}`;
+    return axiosClient.post(url);
+  },
 };
 
 export default userApi;

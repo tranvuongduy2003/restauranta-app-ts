@@ -14,6 +14,7 @@ import reservationApi from 'api/reservationApi';
 import DatePicker from 'react-date-picker';
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
+import TextArea from 'components/TextArea';
 
 const reservationSchema = yup.object({
   name: yup.string().required('Tên danh mục không được để trống'),
@@ -36,6 +37,7 @@ type FormValues = {
   bookingTime: string;
   quantity: number;
   status: string;
+  desc?: string;
 };
 
 const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
@@ -57,6 +59,7 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
       bookingTime: item.bookingTime,
       quantity: item.quantity,
       status: item.status,
+      desc: item.desc,
     },
     resolver: yupResolver(reservationSchema),
   });
@@ -125,6 +128,20 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
               <ErrorMessage>{errors.quantity.message as string}</ErrorMessage>
             )}
           </Field>
+          <Field>
+            <Label name="quantity">Ghi chú</Label>
+            <TextArea
+              control={control as any}
+              height="200px"
+              name="desc"
+              placeholder="Nhập ghi chú về đơn đặt bàn"
+            >
+              {item.desc}
+            </TextArea>
+            {errors.quantity && (
+              <ErrorMessage>{errors.quantity.message as string}</ErrorMessage>
+            )}
+          </Field>
         </div>
         <div className="flex flex-col justify-start w-full gap-5 mx-auto">
           <Field>
@@ -175,7 +192,7 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
 
             <button
               type="button"
-              className="p-[15px_25px] rounded-lg bg-sky-500 relative"
+              className="p-[15px_25px] mb-2 rounded-lg bg-sky-500 relative"
               onClick={() => setOpenTime(true)}
             >
               <span className="font-medium text-white">Chọn giờ</span>

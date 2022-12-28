@@ -11,6 +11,7 @@ import ViewAction from 'components/actions/ViewAction';
 import ViewModal from 'components/user-modal/ViewModal';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import RecoverAction from 'components/actions/RecoverAction';
 
 const DeletedUserPage: React.FC = () => {
   const navigate = useNavigate();
@@ -64,6 +65,17 @@ const DeletedUserPage: React.FC = () => {
       navigate(0);
     } catch (error) {
       toast.error('Xóa người dùng thất bại!');
+      console.log(error);
+    }
+  };
+
+  const handleRecoverUser = async (id: string) => {
+    try {
+      await userApi.recover(id);
+      toast.success('Khôi phục người dùng thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Khôi phục người dùng thất bại!');
       console.log(error);
     }
   };
@@ -128,6 +140,9 @@ const DeletedUserPage: React.FC = () => {
                 </td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
+                    <RecoverAction
+                      onClick={() => handleRecoverUser(user._id || '')}
+                    ></RecoverAction>
                     <ViewAction>
                       <ViewModal item={user}></ViewModal>
                     </ViewAction>

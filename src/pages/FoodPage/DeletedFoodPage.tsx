@@ -13,6 +13,7 @@ import { ICategory, IFood } from 'utils/interface';
 import ViewModal from 'components/food-modal/ViewModal';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import RecoverAction from 'components/actions/RecoverAction';
 
 const DeletedFoodPage: React.FC = () => {
   const navigate = useNavigate();
@@ -77,6 +78,17 @@ const DeletedFoodPage: React.FC = () => {
       navigate(0);
     } catch (error) {
       toast.error('Xóa món ăn thất bại!');
+      console.log(error);
+    }
+  };
+
+  const handleRecoverFood = async (id: string) => {
+    try {
+      await foodApi.recover(id);
+      toast.success('Khôi phục món ăn thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Khôi phục món ăn thất bại!');
       console.log(error);
     }
   };
@@ -172,6 +184,9 @@ const DeletedFoodPage: React.FC = () => {
                 </td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
+                    <RecoverAction
+                      onClick={() => handleRecoverFood(food._id || '')}
+                    ></RecoverAction>
                     <ViewAction>
                       <ViewModal
                         item={{

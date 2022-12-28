@@ -19,6 +19,7 @@ import { Dropdown } from 'components/dropdown';
 import userApi from 'api/userApi';
 
 const phoneNumberRegex =
+  // eslint-disable-next-line no-useless-escape
   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 
 const userSchema = yup.object({

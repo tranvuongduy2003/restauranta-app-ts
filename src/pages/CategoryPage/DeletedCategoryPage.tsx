@@ -11,6 +11,7 @@ import { ICategory } from 'utils/interface';
 import ViewModal from 'components/category-modal/ViewModal';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import RecoverAction from 'components/actions/RecoverAction';
 
 const DeletedCategoryPage: React.FC = () => {
   const navigate = useNavigate();
@@ -67,6 +68,17 @@ const DeletedCategoryPage: React.FC = () => {
     }
   };
 
+  const handleRecoverCategory = async (id: string) => {
+    try {
+      await categoryApi.recover(id);
+      toast.success('Khôi phục danh mục thành công!');
+      navigate(0);
+    } catch (error) {
+      toast.error('Khôi phục danh mục thất bại!');
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Heading
@@ -119,6 +131,9 @@ const DeletedCategoryPage: React.FC = () => {
                 <td>{category.foods && category.foods.length}</td>
                 <td>
                   <div className="flex items-center text-gray-500 gap-x-3">
+                    <RecoverAction
+                      onClick={() => handleRecoverCategory(category._id || '')}
+                    ></RecoverAction>
                     <ViewAction>
                       <ViewModal item={category}></ViewModal>
                     </ViewAction>

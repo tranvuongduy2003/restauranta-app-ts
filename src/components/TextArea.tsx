@@ -23,7 +23,7 @@ const TextArea: React.FC<ITextAreaProps> = ({
       {...field}
       id={name}
       placeholder={placeholder}
-      className="w-full min-h-[260px] p-[15px_25px] border border-grayf1 rounded-lg font-normal transition-all text-black resize-none"
+      className={`w-full min-h-[${height}] h-[${height}] p-[15px_25px] border border-grayf1 rounded-lg font-normal transition-all text-black resize-none`}
       {...props}
     >
       {children}
