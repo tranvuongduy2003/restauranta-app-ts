@@ -1,9 +1,11 @@
 import Field from 'components/Field';
 import Label from 'components/Label';
+import Action from 'components/status/Action';
 import Status from 'components/status/Status';
+import Table from 'components/Table';
 import { method } from 'constants/method';
 import React, { useEffect, useState } from 'react';
-import { IOrder } from 'utils/interface';
+import { ICartItem, IOrder } from 'utils/interface';
 
 interface IViewModalProps {
   item: IOrder;
@@ -60,8 +62,12 @@ const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
             <div>{methodPlaceholder}</div>
           </Field>
           <Field>
-            <Label>Tổng tiền</Label>
-            <div>{item.totalPrice?.toString()}</div>
+            <Label>Tình trạng</Label>
+            <div className="my-2">
+              <div>
+                <Action actionProps={item.action}></Action>
+              </div>
+            </div>
           </Field>
           <Field>
             <Label>Trạng thái</Label>
@@ -70,12 +76,42 @@ const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
             </div>
           </Field>
           <Field>
+            <Label>Tổng tiền</Label>
+            <div>{item.totalPrice?.toString()}</div>
+          </Field>
+          <Field>
             <Label>Ghi chú</Label>
             <div className="my-2">
               <div>{item.desc}</div>
             </div>
           </Field>
         </div>
+      </div>
+      <div>
+        <div className="mx-auto my-5 text-lg font-medium text-center">
+          Danh sách món
+        </div>
+        <Table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Tên món</th>
+              <th>Giá</th>
+              <th>Số lượng</th>
+            </tr>
+          </thead>
+          <tbody>
+            {item?.items?.length > 0 &&
+              item.items.map((item: ICartItem) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.price}</td>
+                  <td>{item.qty}</td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
       </div>
     </div>
   );

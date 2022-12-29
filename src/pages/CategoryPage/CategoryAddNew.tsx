@@ -50,6 +50,7 @@ const CategoryAddNew: React.FC = () => {
 
   const handleAddNewCategory = (data: ICategory) => {
     setLoading(true);
+    console.log(file);
     const storageRef = ref(storage, 'categories/' + file?.name);
     const uploadTask = uploadBytesResumable(storageRef, file as any);
     uploadTask.on(

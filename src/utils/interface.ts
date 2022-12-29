@@ -91,3 +91,11 @@ export interface IOrder {
   desc?: string;
   action?: string;
 }
+
+export interface ICartItem {
+  id?: string;
+  name?: string;
+  price?: number;
+  imgUrl?: string;
+  qty?: number;
+}

@@ -11,9 +11,8 @@ const Modal: React.FC<IModalProps> = ({ children, handleClose = () => {} }) => {
     return <div className="modal"></div>;
   } else {
     return ReactDOM.createPortal(
-      <div className="fixed inset-0 z-50 flex items-center justify-center modal">
-        <div className="absolute inset-0 bg-black bg-opacity-50 overlay"></div>
-        <div className="relative z-10 w-full p-10 bg-white rounded-lg modal-content max-w-[1000px]">
+      <div className="fixed inset-0 z-50 w-full py-20 overflow-y-auto bg-black bg-opacity-50 modal">
+        <div className="relative z-10 mx-auto w-full p-10 bg-white rounded-lg modal-content max-w-[1000px]">
           <span
             className="absolute top-0 right-0 inline-flex items-center justify-center w-10 h-10 text-lg font-medium text-black bg-white border rounded-full cursor-pointer -translate-y-1/3 translate-x-1/3"
             onClick={handleClose}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { logout } from 'features/auth/userSlice';
 import { useAppDispatch } from 'app/hooks';
 
@@ -129,7 +129,8 @@ const sidebarLinks = [
 const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [url, setUrl] = useState('/');
+  const location = useLocation();
+  const [url, setUrl] = useState(location.pathname);
 
   const handleLogout = () => {
     dispatch(logout());

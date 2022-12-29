@@ -13,6 +13,8 @@ import DeleteAction from 'components/actions/DeleteAction';
 import UpdateAction from 'components/order-modal/actions/UpdateAction';
 import ViewAction from 'components/actions/ViewAction';
 import ViewModal from 'components/order-modal/ViewModal';
+import Method from 'components/status/Method';
+import Action from 'components/status/Action';
 
 interface IOrderPageProps {}
 
@@ -122,8 +124,8 @@ const OrderPage: React.FunctionComponent<IOrderPageProps> = (props) => {
             <th>Người đặt</th>
             <th>Số điện thoại</th>
             <th>Địa chỉ</th>
-            <th>Phương thức</th>
             <th>Tình trạng</th>
+            <th>Phương thức</th>
             <th>Trạng thái</th>
             <th>Tổng tiền</th>
             <th>Thao tác</th>
@@ -145,10 +147,14 @@ const OrderPage: React.FunctionComponent<IOrderPageProps> = (props) => {
                   <span className="text-gray-500">{order.address}</span>
                 </td>
                 <td>
-                  <span className="text-gray-500">{order.action}</span>
+                  <span className="text-gray-500">
+                    <Action actionProps={order.action}></Action>
+                  </span>
                 </td>
                 <td>
-                  <span className="text-gray-500">{order.method}</span>
+                  <span className="text-gray-500">
+                    <Method methodProps={order.method}></Method>
+                  </span>
                 </td>
                 <td>
                   <Status statusProps={order.status}></Status>

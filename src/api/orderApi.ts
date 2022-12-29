@@ -17,6 +17,11 @@ const orderApi = {
     const url: string = `/order/${id}`;
     return axiosClient.put(url, payload);
   },
+
+  deleteItemFromOrder(orderId: string, items: any) {
+    const url: string = `order/${orderId}`;
+    return axiosClient.post(url, items);
+  },
 };
 
 export default orderApi;
