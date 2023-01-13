@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { api } from 'constants/api';
+import { toast } from 'react-toastify';
 import { getAccessToken, refreshToken } from 'utils/auth';
 
 type IConfig = AxiosRequestConfig;
@@ -37,11 +38,12 @@ axiosClient.interceptors.response.use(
   async function (err: any) {
     const originalConfig = err.config;
 
-    if (err?.response?.status === 401 && !originalConfig.sent) {
-      originalConfig.sent = true;
+    if (err?.response?.status === 401 && !originalConfig._retry) {
+      originalConfig._retyr = true;
       try {
+        console.log('retry');
         const accessToken = await refreshToken();
-        originalConfig.headers = {
+        axios.defaults.headers.common = {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         };
@@ -54,7 +56,10 @@ axiosClient.interceptors.response.use(
       return Promise.reject(err);
     }
 
-    console.log(err);
+    if (err.status === 403) {
+      toast.error('Bạn không có quyền sử dụng chức năng này');
+    }
+
     return Promise.reject(err.response.data);
   }
 );

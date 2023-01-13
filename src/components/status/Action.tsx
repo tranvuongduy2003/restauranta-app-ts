@@ -10,8 +10,8 @@ const Action: React.FunctionComponent<IActionProps> = ({
   actionProps = '',
   children,
 }) => {
-  if (actionProps === action.CANCLE.id)
-    return <span>{action.CANCLE.title}</span>;
+  if (actionProps === action.CANCEL.id)
+    return <span>{action.CANCEL.title}</span>;
 
   if (actionProps === action.DELIVERING.id)
     return <span>{action.DELIVERING.title}</span>;

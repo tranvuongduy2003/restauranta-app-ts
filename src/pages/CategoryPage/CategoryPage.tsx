@@ -76,8 +76,6 @@ const CategoryPage: React.FC = () => {
         desc="Quản lý tất cả loại món ăn"
         addUrl="/category/add-new"
         addTitle="Thêm loại mới"
-        deleteUrl="/category/deleted"
-        deleteTitle="Loại món đã xóa"
       ></Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[400px]">

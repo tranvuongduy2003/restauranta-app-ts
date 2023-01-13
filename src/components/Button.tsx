@@ -8,6 +8,7 @@ interface IButtonProps {
   className?: string;
   loading?: boolean;
   color?: string;
+  onClick?: () => void;
 }
 
 const Button: FC<IButtonProps> = ({
@@ -17,12 +18,14 @@ const Button: FC<IButtonProps> = ({
   className = '',
   loading = false,
   color = '',
+  onClick,
 }: IButtonProps): any => {
   if (to) {
     return (
       <NavLink
         to={to}
         className={`block overflow-hidden rounded-lg ${className}`}
+        onClick={onClick}
       >
         <button
           type={type}
@@ -40,7 +43,10 @@ const Button: FC<IButtonProps> = ({
     );
   } else {
     return (
-      <div className={`block overflow-hidden rounded-lg ${className}`}>
+      <div
+        className={`block overflow-hidden rounded-lg ${className}`}
+        onClick={onClick}
+      >
         <button
           type={type}
           className={`w-[200px] h-[54px] flex justify-center items-center text-white font-medium bg-primary ${

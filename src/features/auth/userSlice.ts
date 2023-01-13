@@ -2,14 +2,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
 import { ILogin } from 'utils/interface';
 import userApi from '../../api/userApi';
-import storage from 'redux-persist/lib/storage';
 
 export const login = createAsyncThunk('user/login', async (payload: ILogin) => {
   const data: any = await userApi.login(payload);
-  await storage.setItem('access_token', data.accessToken);
-  await storage.setItem('refresh_token', data.refreshToken);
+  localStorage.setItem('access_token', data.accessToken);
+  localStorage.setItem('refresh_token', data.refreshToken);
   const userData: any = await userApi.get(data.userId);
-  await storage.setItem('user', JSON.stringify(userData.user));
+  localStorage.setItem('user', JSON.stringify(userData.user));
   return {
     user: userData.user,
     accessToken: data.accessToken,
@@ -22,9 +21,9 @@ export const logout = createAsyncThunk(
   async (_, { getState }) => {
     const state = getState() as any;
     await userApi.logout(state.user._id);
-    storage.removeItem('refresh_token');
-    storage.removeItem('access_token');
-    storage.removeItem('user');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
     return { accessToken: '', refreshToken: '', user: {} };
   }
 );

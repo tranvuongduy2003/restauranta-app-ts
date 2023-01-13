@@ -31,26 +31,9 @@ const userApi = {
     return axiosClient.delete(url);
   },
 
-  deleteUserPermanently(id: string) {
-    const url = `admin/user/bin/${id}`;
-    return axiosClient.delete(url);
-  },
-
   editUser(id: string, payload: any) {
     const url = `/admin/user/${id}`;
     return axiosClient.put(url, payload);
-  },
-
-  getDeletedUser(page?: number, search?: string) {
-    const url: string = `/admin/user/bin?page=${page || ''}&search=${
-      search || ''
-    }`;
-    return axiosClient.get(url);
-  },
-
-  recover(id: string) {
-    const url: string = `/admin/user/${id}`;
-    return axiosClient.post(url);
   },
 };
 

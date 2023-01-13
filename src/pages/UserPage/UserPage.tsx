@@ -71,12 +71,7 @@ const UserPage: React.FC = () => {
 
   return (
     <div>
-      <Heading
-        title="Người dùng"
-        desc="Quản lý tất cả người dùng"
-        deleteUrl="/user/deleted"
-        deleteTitle="Người dùng đã xóa"
-      ></Heading>
+      <Heading title="Người dùng" desc="Quản lý tất cả người dùng"></Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[300px]">
           <Search
@@ -106,8 +101,9 @@ const UserPage: React.FC = () => {
                   <div className="flex items-center gap-x-3">
                     <img
                       src={`${
-                        user.avatar?.url ||
-                        'https://tinhayvip.com/wp-content/uploads/2022/04/meme-ech-xanh-5.jpg'
+                        user.avatar?.url !== ''
+                          ? user.avatar?.url
+                          : 'https://tinhayvip.com/wp-content/uploads/2022/04/meme-ech-xanh-5.jpg'
                       }`}
                       alt=""
                       className="w-[66px] h-[55px] rounded object-cover"

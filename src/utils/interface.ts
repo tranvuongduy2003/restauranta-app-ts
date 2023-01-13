@@ -63,7 +63,8 @@ export interface IUser {
   phoneNumber?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  role?: string;
+  role?: IRole[];
+  admin?: boolean;
 }
 
 export interface IReservation {
@@ -98,4 +99,13 @@ export interface ICartItem {
   price?: number;
   imgUrl?: string;
   qty?: number;
+}
+
+export interface IRole {
+  _id?: string;
+  name?: string;
+  read: boolean;
+  add: boolean;
+  edit: boolean;
+  delete: boolean;
 }

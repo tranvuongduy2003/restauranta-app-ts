@@ -93,8 +93,8 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
 
   useEffect(() => {
     switch (watchingAction) {
-      case action.CANCLE.id:
-        setActionPlaceholder(action.CANCLE.title);
+      case action.CANCEL.id:
+        setActionPlaceholder(action.CANCEL.title);
         break;
       case action.HANDLING.id:
         setActionPlaceholder(action.HANDLING.title);
@@ -223,9 +223,9 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
               ></Dropdown.Select>
               <Dropdown.List>
                 <Dropdown.Option
-                  onClick={() => setValue('action', action.CANCLE.id)}
+                  onClick={() => setValue('action', action.CANCEL.id)}
                 >
-                  {action.CANCLE.title}
+                  {action.CANCEL.title}
                 </Dropdown.Option>
                 <Dropdown.Option
                   onClick={() => setValue('action', action.HANDLING.id)}

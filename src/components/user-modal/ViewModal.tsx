@@ -45,10 +45,6 @@ const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
             <Label name="phoneNumber">Số điện thoại</Label>
             <div>{item.phoneNumber}</div>
           </Field>
-          <Field>
-            <Label name="role">Phân quyền</Label>
-            <div>{item.role}</div>
-          </Field>
         </div>
       </div>
     </div>

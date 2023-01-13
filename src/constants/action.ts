@@ -1,6 +1,6 @@
 export const action = {
-  CANCLE: {
-    id: 'cancle',
+  CANCEL: {
+    id: 'cancel',
     title: 'Hủy đơn',
   },
   HANDLING: {

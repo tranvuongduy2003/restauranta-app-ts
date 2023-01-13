@@ -89,8 +89,6 @@ const FoodPage: React.FC = () => {
         desc="Quản lý tất cả món ăn"
         addUrl="/"
         addTitle="Thêm món ăn"
-        deleteUrl="/food/deleted"
-        deleteTitle="Món ăn đã xóa"
       ></Heading>
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center flex-1 gap-5">

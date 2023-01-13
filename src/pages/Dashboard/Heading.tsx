@@ -1,5 +1,5 @@
 import Button from 'components/Button';
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 interface IHeadingProps {
   title: string;
@@ -10,6 +10,7 @@ interface IHeadingProps {
   deleteTitle?: string;
   backUrl?: string;
   backTitle?: string;
+  children?: ReactElement;
 }
 
 const Heading: React.FC<IHeadingProps> = ({
@@ -21,6 +22,7 @@ const Heading: React.FC<IHeadingProps> = ({
   deleteTitle = '',
   backUrl = '',
   backTitle = '',
+  children,
 }) => {
   return (
     <div className="flex items-center justify-between mb-10">
@@ -44,6 +46,7 @@ const Heading: React.FC<IHeadingProps> = ({
             {backTitle}
           </Button>
         )}
+        {children}
       </div>
     </div>
   );
