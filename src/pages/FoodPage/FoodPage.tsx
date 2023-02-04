@@ -151,7 +151,7 @@ const FoodPage: React.FC = () => {
                       <time className="text-sm text-gray-500">
                         Ngày tạo:{' '}
                         {food.createdAt &&
-                          new Date(food.createdAt).toLocaleDateString()}
+                          new Date(food.createdAt).toLocaleDateString('vi-VN')}
                       </time>
                     </div>
                   </div>

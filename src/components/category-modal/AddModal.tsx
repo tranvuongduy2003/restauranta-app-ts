@@ -4,7 +4,6 @@ import Input from 'components/Input';
 import Label from 'components/Label';
 import React, { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import Heading from '../Dashboard/Heading';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from 'firebase-config';
 import categoryApi from 'api/categoryApi';
@@ -20,7 +19,11 @@ const categorySchema = yup.object({
   name: yup.string().required('Tên danh mục không được để trống'),
 });
 
-const CategoryAddNew: React.FC = () => {
+interface IAddModalProps {
+  handleClose: () => void;
+}
+
+const AddModal: React.FC<IAddModalProps> = ({ handleClose }) => {
   const navigate = useNavigate();
   const fileRef = useRef<any>(null);
   const [file, setFile] = useState<File>();
@@ -90,7 +93,8 @@ const CategoryAddNew: React.FC = () => {
               });
               setLoading(false);
               toast.success('Tạo danh mục thành công!');
-              navigate('/category');
+              navigate(0);
+              handleClose && handleClose();
             } catch (error) {
               setLoading(false);
               toast.error('Tạo danh mục thất bại!');
@@ -107,62 +111,54 @@ const CategoryAddNew: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-row items-center justify-between">
-        <Heading title="Thêm danh mục" desc="Thêm danh mục mới"></Heading>
-        <Button to="/category" color="bg-slate-300" type="button">
-          Trở về
-        </Button>
-      </div>
-      <form onSubmit={handleSubmit(handleAddNewCategory)}>
-        <div className="flex flex-col justify-start w-1/2 gap-5 mx-auto">
-          <Field>
-            <Label name="name">Tên danh mục</Label>
-            <Input
-              control={control as any}
-              name="name"
-              placeholder="Nhập tên danh mục"
-            ></Input>
-            {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-          </Field>
-          <Field>
-            <Label>Tải ảnh</Label>
-            <Controller
-              control={control as any}
-              name="images"
-              render={({ field }) => {
-                return (
-                  <input
-                    {...field}
-                    ref={fileRef}
-                    onChange={(e) => handleUploadFiles(e)}
-                    type="file"
-                    name="images"
-                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
-                    accept="image/png, image/jpeg, image/jpg"
-                    required
-                  ></input>
-                );
-              }}
-            />
-          </Field>
-          <Field>
-            <Toggle
-              onClick={() => setValue('popular', !watchPopular)}
-              on={watchPopular === true}
-            >
-              Phổ biến
-            </Toggle>
-          </Field>
-        </div>
-        <Field className="items-center">
-          <Button loading={loading} type="submit" className="">
-            Thêm danh mục mới
-          </Button>
+    <form onSubmit={handleSubmit(handleAddNewCategory)}>
+      <div className="flex flex-col justify-start w-1/2 gap-5 mx-auto">
+        <Field>
+          <Label name="name">Tên danh mục</Label>
+          <Input
+            control={control as any}
+            name="name"
+            placeholder="Nhập tên danh mục"
+          ></Input>
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </Field>
-      </form>
-    </div>
+        <Field>
+          <Label>Tải ảnh</Label>
+          <Controller
+            control={control as any}
+            name="images"
+            render={({ field }) => {
+              return (
+                <input
+                  {...field}
+                  ref={fileRef}
+                  onChange={(e) => handleUploadFiles(e)}
+                  type="file"
+                  name="images"
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                  accept="image/png, image/jpeg, image/jpg"
+                  required
+                ></input>
+              );
+            }}
+          />
+        </Field>
+        <Field>
+          <Toggle
+            onClick={() => setValue('popular', !watchPopular)}
+            on={watchPopular === true}
+          >
+            Phổ biến
+          </Toggle>
+        </Field>
+      </div>
+      <Field className="items-center">
+        <Button loading={loading} type="submit" className="">
+          Thêm danh mục mới
+        </Button>
+      </Field>
+    </form>
   );
 };
 
-export default CategoryAddNew;
+export default AddModal;

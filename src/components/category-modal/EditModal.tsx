@@ -110,8 +110,10 @@ const EditModal: React.FC<IEditModalProps> = ({ handleClose, item }) => {
 
   const handleUpdateCategory = async (data: FormValues) => {
     try {
-      const imageRef = ref(storage, deletedImage?.ref);
-      await deleteObject(imageRef);
+      if (deletedImage) {
+        const imageRef = ref(storage, deletedImage.ref);
+        await deleteObject(imageRef);
+      }
       await categoryApi.update(item._id, {
         ...data,
         image: currentImage.url,

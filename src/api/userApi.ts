@@ -22,7 +22,7 @@ const userApi = {
   },
 
   get(id: string) {
-    const url = `/auth/user/${id}`;
+    const url = `/user/${id}`;
     return axiosClient.get(url);
   },
 

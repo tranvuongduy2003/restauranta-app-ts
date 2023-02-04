@@ -12,9 +12,9 @@ const ViewModal: React.FC<IViewModalProps> = ({ item }) => {
   useEffect(() => {
     const handleFetchFoods = async () => {
       try {
-        const data: any = await foodApi.getAll();
-        const foods = { ...data.foods };
-        setFoods(foods.filter((food: IFood) => food.categoryId === item._id));
+        const data: any = await foodApi.getAll(undefined, item._id);
+        const { foods } = data;
+        setFoods(foods);
       } catch (error) {
         console.log(error);
       }

@@ -112,7 +112,7 @@ const UserPage: React.FC = () => {
                       <h3 className="font-semibold">{user.name}</h3>
                       <time className="text-sm text-gray-500">
                         {user.createdAt &&
-                          new Date(user.createdAt).toLocaleDateString()}
+                          new Date(user.createdAt).toLocaleDateString('vi-VN')}
                       </time>
                     </div>
                   </div>

@@ -12,6 +12,9 @@ import { ICategory } from 'utils/interface';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ViewModal from 'components/category-modal/ViewModal';
+import Modal from 'components/modal/Modal';
+import AddModal from 'components/category-modal/AddModal';
+import Button from 'components/Button';
 
 const CategoryPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ const CategoryPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     try {
@@ -71,12 +75,18 @@ const CategoryPage: React.FC = () => {
 
   return (
     <div>
-      <Heading
-        title="Loại món"
-        desc="Quản lý tất cả loại món ăn"
-        addUrl="/category/add-new"
-        addTitle="Thêm loại mới"
-      ></Heading>
+      <Heading title="Loại món" desc="Quản lý tất cả loại món ăn">
+        <>
+          {show && (
+            <Modal handleClose={() => setShow(false)}>
+              <AddModal handleClose={() => setShow(false)}></AddModal>
+            </Modal>
+          )}
+          <Button type="button" onClick={() => setShow(true)}>
+            Thêm loại món
+          </Button>
+        </>
+      </Heading>
       <div className="flex items-center justify-start gap-5 mb-10">
         <div className="w-full max-w-[400px]">
           <Search
@@ -115,7 +125,7 @@ const CategoryPage: React.FC = () => {
                 <td>
                   <time>
                     {category.createdAt &&
-                      new Date(category.createdAt).toLocaleDateString()}
+                      new Date(category.createdAt).toLocaleDateString('vi-VN')}
                   </time>
                 </td>
                 <td>{category.foods && category.foods.length}</td>
